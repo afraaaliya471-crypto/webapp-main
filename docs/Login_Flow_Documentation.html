@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+  <meta charset="utf-8">
+  <title>Tanseeq Web App – Login Flow Documentation</title>
+  <style>
+    body {
+      font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+      font-size: 11pt;
+      color: #1a1a1a;
+      max-width: 860px;
+      margin: 40px auto;
+      line-height: 1.6;
+    }
+    h1 { font-size: 22pt; color: #0f2f57; border-bottom: 3px solid #b88a1d; padding-bottom: 8px; margin-top: 0; }
+    h2 { font-size: 15pt; color: #0f2f57; border-left: 5px solid #b88a1d; padding-left: 10px; margin-top: 30px; }
+    h3 { font-size: 12pt; color: #1f4e79; margin-top: 20px; }
+    h4 { font-size: 11pt; color: #2e4057; margin-top: 16px; font-style: italic; }
+    p  { margin: 6px 0 10px; }
+    ul, ol { margin: 6px 0 10px 24px; }
+    li { margin-bottom: 4px; }
+
+    .cover {
+      text-align: center;
+      padding: 60px 0 40px;
+      border-bottom: 2px solid #0f2f57;
+      margin-bottom: 40px;
+    }
+    .cover h1 { border: none; font-size: 28pt; }
+    .cover .subtitle { font-size: 14pt; color: #555; margin-top: 8px; }
+    .cover .meta { font-size: 10pt; color: #888; margin-top: 24px; }
+
+    .callout {
+      background: #eef4fb;
+      border-left: 5px solid #0f2f57;
+      padding: 12px 16px;
+      margin: 16px 0;
+      border-radius: 4px;
+    }
+    .callout.warning {
+      background: #fff8e6;
+      border-left-color: #b88a1d;
+    }
+    .callout.success {
+      background: #edfaf1;
+      border-left-color: #1a7a40;
+    }
+    .callout.danger {
+      background: #fdecea;
+      border-left-color: #c0392b;
+    }
+    .callout strong { display: block; margin-bottom: 4px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 10.5pt;
+    }
+    th {
+      background: #0f2f57;
+      color: #fff;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 600;
+    }
+    td {
+      padding: 7px 10px;
+      border-bottom: 1px solid #dde3ea;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #f5f8fc; }
+
+    .step-box {
+      display: flex;
+      gap: 14px;
+      margin: 14px 0;
+      align-items: flex-start;
+    }
+    .step-num {
+      background: #0f2f57;
+      color: #fff;
+      font-weight: 700;
+      font-size: 13pt;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-content { flex: 1; }
+    .step-content strong { display: block; font-size: 11.5pt; color: #0f2f57; margin-bottom: 3px; }
+
+    code {
+      font-family: "Courier New", monospace;
+      font-size: 9.5pt;
+      background: #f0f4f8;
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: #c0392b;
+    }
+    .code-block {
+      font-family: "Courier New", monospace;
+      font-size: 9pt;
+      background: #1e2a38;
+      color: #abb2bf;
+      padding: 14px 16px;
+      border-radius: 6px;
+      margin: 12px 0;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+    .code-block .kw  { color: #c678dd; }
+    .code-block .fn  { color: #61afef; }
+    .code-block .str { color: #98c379; }
+    .code-block .cm  { color: #5c6370; font-style: italic; }
+    .code-block .var { color: #e06c75; }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0;
+      flex-wrap: wrap;
+    }
+    .flow-node {
+      background: #0f2f57;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 10pt;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .flow-node.gold { background: #b88a1d; }
+    .flow-node.green { background: #1a7a40; }
+    .flow-node.red { background: #c0392b; }
+    .flow-node.grey { background: #6b7280; }
+    .flow-arrow { font-size: 18pt; color: #0f2f57; font-weight: 700; }
+
+    .page-break { page-break-before: always; }
+    hr { border: none; border-top: 1px solid #dde3ea; margin: 30px 0; }
+
+    .toc { background: #f5f8fc; border: 1px solid #dde3ea; padding: 20px 24px; border-radius: 6px; margin-bottom: 30px; }
+    .toc h2 { margin-top: 0; border: none; padding: 0; font-size: 13pt; }
+    .toc ol { margin: 10px 0 0 18px; }
+    .toc li { margin-bottom: 6px; font-size: 10.5pt; }
+    .toc a { color: #0f2f57; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 9pt;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+    .badge.blue { background: #dbeafe; color: #1e40af; }
+    .badge.green { background: #d1fae5; color: #065f46; }
+    .badge.red { background: #fee2e2; color: #991b1b; }
+    .badge.gold { background: #fef3c7; color: #92400e; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ COVER ═══ -->
+<div class="cover">
+  <h1>Tanseeq Web App</h1>
+  <div class="subtitle">Login Page — Complete Flow Documentation</div>
+  <div class="meta">
+    Prepared for: Tanseeq Investment Team<br>
+    Date: May 2026<br>
+    Version: 1.0
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ TOC ═══ -->
+<div class="toc">
+  <h2>📋 Table of Contents</h2>
+  <ol>
+    <li><a href="#overview">Overview — What is the Login Page?</a></li>
+    <li><a href="#what-user-sees">What the User Sees on Screen</a></li>
+    <li><a href="#flow">Step-by-Step Login Flow (User → Dashboard)</a></li>
+    <li><a href="#files">Every File Involved in Login</a></li>
+    <li><a href="#security">Security Features Built Into Login</a></li>
+    <li><a href="#error-handling">Error Handling — What Goes Wrong and Why</a></li>
+    <li><a href="#session">Sessions — How the App Remembers You Are Logged In</a></li>
+    <li><a href="#logout">Logout Flow</a></li>
+    <li><a href="#concepts">Core Concepts Explained Simply</a></li>
+    <li><a href="#config">Environment Variables That Control Login</a></li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ SECTION 1 ═══ -->
+<h2 id="overview">1. Overview — What is the Login Page?</h2>
+
+<p>
+  The Tanseeq Web App uses <strong>Microsoft Sign-In</strong> (also called Microsoft OAuth or SSO — Single Sign-On).
+  This means there is <strong>no username/password form</strong> on the page.
+  Instead, the user clicks one button — <em>"Sign in with Microsoft"</em> — and is redirected to
+  Microsoft's own login page to enter their company email and password there.
+  Microsoft then confirms to our app that the login was successful, and the user lands on the dashboard.
+</p>
+
+<div class="callout">
+  <strong>🔑 Why Microsoft Login?</strong>
+  The company already uses Microsoft 365 (Outlook, Teams, etc.). By using Microsoft login,
+  employees use the same password they use for email — no new passwords to remember,
+  no passwords stored in our database, and IT manages access through Azure AD.
+</div>
+
+<p>The flow is called <strong>OAuth 2.0</strong> — an industry-standard protocol for secure sign-in without sharing passwords.</p>
+
+<!-- ═══════════════════════════════════════════════════ SECTION 2 ═══ -->
+<h2 id="what-user-sees">2. What the User Sees on Screen</h2>
+
+<p>When a user visits the app URL (e.g. <code>https://yourapp.com</code>), they see a single dark-themed login card:</p>
+
+<table>
+  <tr>
+    <th>Element</th>
+    <th>What it is</th>
+    <th>Where it comes from</th>
+  </tr>
+  <tr>
+    <td>Company logo (PS.jpg)</td>
+    <td>Tanseeq Investment logo image</td>
+    <td><code>public/images/companies/PS.jpg</code></td>
+  </tr>
+  <tr>
+    <td>"Tanseeq Web App" heading</td>
+    <td>Static app title</td>
+    <td>Hard-coded in <code>welcome.blade.php</code></td>
+  </tr>
+  <tr>
+    <td>"Sign in with Microsoft" button</td>
+    <td>A link that starts the login process</td>
+    <td>Points to route <code>/auth/microsoft</code></td>
+  </tr>
+  <tr>
+    <td>Red error box (shown only on failure)</td>
+    <td>Message like "Access is restricted to company accounts only"</td>
+    <td>Laravel session flash message from the backend</td>
+  </tr>
+</table>
+
+<div class="callout warning">
+  <strong>⚠️ Note for non-technical readers:</strong>
+  A "flash message" is a one-time message stored in the user's session. It appears once after
+  a redirect and then disappears — like a pop-up that automatically closes after you read it.
+</div>
+
+<p>The page file is: <code>resources/views/welcome.blade.php</code></p>
+
+The relevant button line in the code:
+<div class="code-block"><span class="str">&lt;a href="{{ route('auth.microsoft') }}" class="microsoft-btn"&gt;</span>
+    Sign in with Microsoft
+<span class="str">&lt;/a&gt;</span></div>
+
+<p>
+  <code>{{ route('auth.microsoft') }}</code> is Blade syntax (Laravel's templating language) that automatically
+  generates the correct URL: <code>/auth/microsoft</code>. This means if the URL ever changes, you only change it
+  in one place (routes) and every page updates automatically.
+</p>
+
+<!-- ═══════════════════════════════════════════════════ SECTION 3 ═══ -->
+<div class="page-break"></div>
+<h2 id="flow">3. Step-by-Step Login Flow (User → Dashboard)</h2>
+
+<p>The complete journey from clicking the button to arriving at the dashboard involves <strong>8 steps</strong>:</p>
+
+<div class="step-box">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    <strong>User visits the app URL</strong>
+    The user opens the browser and goes to the app (e.g. <code>http://outlook-mailtest.test</code>).
+    Laravel routes this to the <code>welcome</code> view, which displays the login card.
+    <br><br>
+    <em>Route: <code>GET /</code> → shows <code>welcome.blade.php</code></em>
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <strong>User clicks "Sign in with Microsoft"</strong>
+    The button is a link to <code>/auth/microsoft</code>. Clicking it sends a GET request to our server.
+    <br><br>
+    <em>Route: <code>GET /auth/microsoft</code> → <code>MicrosoftOAuthController@redirectToMicrosoft</code></em>
+    <br>
+    <span class="badge gold">Rate Limited: 15 clicks per minute per IP address</span>
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    <strong>Server builds the Microsoft login URL and redirects</strong>
+    The controller checks that Azure credentials are configured, then uses the <strong>Socialite</strong>
+    library to build a special Microsoft login URL that includes our App ID and a security "state" token.
+    The browser is redirected to Microsoft's login page.
+    <br><br>
+    <em>Example Microsoft URL generated:</em>
+    <div class="code-block">https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/authorize
+  ?client_id=401538ec-9257-479c-99fb-009f10765b30
+  &redirect_uri=https://yourapp.com/auth/microsoft/callback
+  &scope=openid profile email User.Read
+  &state=abc123securetoken
+  &response_type=code</div>
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">4</div>
+  <div class="step-content">
+    <strong>User enters their Microsoft (company) credentials</strong>
+    This happens entirely on Microsoft's servers — our app never sees the password.
+    The user enters their company email and password on Microsoft's own page.
+    If the company uses MFA (Multi-Factor Authentication), that happens here too.
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">5</div>
+  <div class="step-content">
+    <strong>Microsoft redirects back to our app with an authorization code</strong>
+    After successful authentication, Microsoft sends the user's browser back to our configured
+    callback URL with a short-lived code:
+    <br><br>
+    <code>GET /auth/microsoft/callback?code=ABCDEF&state=abc123securetoken</code>
+    <br><br>
+    <em>Route: <code>GET /auth/microsoft/callback</code> → <code>MicrosoftOAuthController@handleMicrosoftCallback</code></em>
+    <span class="badge gold">Rate Limited: 15 per minute per IP</span>
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">6</div>
+  <div class="step-content">
+    <strong>Our server exchanges the code for the user's profile</strong>
+    The <code>handleMicrosoftCallback</code> method runs. Behind the scenes, Socialite makes a
+    server-to-server call to Microsoft to exchange the code for an access token, then fetches
+    the user's profile (name, email, Microsoft user ID). The browser code is never stored.
+    <br><br>
+    Three checks happen immediately:
+    <ul>
+      <li>✅ Is the email not empty?</li>
+      <li>✅ Is the email on the allowed domain (<code>tanseeqinvestment.com</code>)?</li>
+      <li>✅ Does the Azure App ID and Secret match what we have configured?</li>
+    </ul>
+    If any check fails → redirect back to login page with an error message.
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">7</div>
+  <div class="step-content">
+    <strong>User is found or created in our database</strong>
+    The app looks up the local <code>users</code> table by email address:
+    <br><br>
+    <table>
+      <tr>
+        <th>Scenario</th>
+        <th>What happens</th>
+      </tr>
+      <tr>
+        <td>User exists</td>
+        <td>No action needed. If their <code>microsoft_id</code> field is blank (legacy account), it gets filled in silently.</td>
+      </tr>
+      <tr>
+        <td>User does NOT exist</td>
+        <td>A new row is created in <code>users</code> table with name, email, microsoft_id. A random 32-character password is generated (they will never use it — login is always through Microsoft).</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">8</div>
+  <div class="step-content">
+    <strong>Session is created and user lands on dashboard</strong>
+    Three things happen in sequence:
+    <ol>
+      <li><strong>Session ID is regenerated</strong> — a new unique session ID is issued to prevent a security attack called "session fixation".</li>
+      <li><strong>Auth::login($user)</strong> — Laravel marks this browser session as authenticated for this user.</li>
+      <li><strong>Redirect to dashboard</strong> — the user is sent to <code>/dashboard</code>.</li>
+    </ol>
+    <br>
+    From this point, every page request checks the session to confirm the user is still logged in.
+    The session is stored in <strong>Redis</strong> (Upstash cloud), encrypted with the app key.
+  </div>
+</div>
+
+<br>
+<h3>Visual Flow Diagram</h3>
+
+<div class="flow-row">
+  <div class="flow-node">Browser visits /</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-node">Login Page shown</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-node">Click button → /auth/microsoft</div>
+</div>
+<div class="flow-row" style="margin-left:40px;">
+  <div class="flow-arrow">↓</div>
+</div>
+<div class="flow-row">
+  <div class="flow-node gold">Laravel builds Microsoft URL</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-node">Browser redirected to Microsoft</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-node">User enters company password</div>
+</div>
+<div class="flow-row" style="margin-left:40px;">
+  <div class="flow-arrow">↓</div>
+</div>
+<div class="flow-row">
+  <div class="flow-node">Microsoft sends back code</div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-node gold">Laravel validates email domain</div>
+</div>
+<div class="flow-row" style="margin-left: 40px; margin-top: 4px;">
+  <div class="flow-arrow">↓ Pass</div>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <div class="flow-arrow">↓ Fail</div>
+</div>
+<div class="flow-row">
+  <div class="flow-node gold">Find or create user in DB</div>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <div class="flow-node red">Redirect to / with error</div>
+</div>
+<div class="flow-row" style="margin-left:40px;">
+  <div class="flow-arrow">↓</div>
+</div>
+<div class="flow-row">
+  <div class="flow-node green">Regenerate session ID → Login → Redirect to /dashboard ✅</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ SECTION 4 ═══ -->
+<div class="page-break"></div>
+<h2 id="files">4. Every File Involved in Login</h2>
+
+<table>
+  <tr>
+    <th>File</th>
+    <th>Purpose in Login</th>
+    <th>Who touches it</th>
+  </tr>
+  <tr>
+    <td><code>resources/views/welcome.blade.php</code></td>
+    <td>The login page HTML the user sees. Contains the button, logo, and error message area.</td>
+    <td>Browser / Frontend</td>
+  </tr>
+  <tr>
+    <td><code>routes/web.php</code></td>
+    <td>Defines the 3 login routes: <code>/</code>, <code>/auth/microsoft</code>, <code>/auth/microsoft/callback</code>. Also applies rate limiting.</td>
+    <td>Laravel Router</td>
+  </tr>
+  <tr>
+    <td><code>app/Http/Controllers/Auth/MicrosoftOAuthController.php</code></td>
+    <td>The main controller with all login logic: redirect to Microsoft, handle callback, validate domain, create user, manage session, handle logout.</td>
+    <td>Backend PHP</td>
+  </tr>
+  <tr>
+    <td><code>config/services.php</code></td>
+    <td>Holds the Microsoft OAuth settings: App ID, App Secret, Redirect URL, allowed domain, OAuth scopes.</td>
+    <td>Laravel Config</td>
+  </tr>
+  <tr>
+    <td><code>.env</code></td>
+    <td>Stores the actual secret values: <code>AZURE_CLIENT_ID</code>, <code>AZURE_CLIENT_SECRET</code>, <code>AZURE_TENANT_ID</code>, <code>MICROSOFT_ALLOWED_DOMAIN</code>. Never committed to Git.</td>
+    <td>Server environment</td>
+  </tr>
+  <tr>
+    <td><code>app/Models/User.php</code></td>
+    <td>The User database model. Defines what columns exist (name, email, microsoft_id, is_super_admin, etc.) and how roles/permissions are checked.</td>
+    <td>Backend PHP / Database</td>
+  </tr>
+  <tr>
+    <td><code>app/Http/Middleware/SecurityHeadersMiddleware.php</code></td>
+    <td>Adds security HTTP headers to every response including the login page (X-Frame-Options, X-Content-Type-Options, HSTS, etc.).</td>
+    <td>Laravel Middleware</td>
+  </tr>
+  <tr>
+    <td><code>bootstrap/app.php</code></td>
+    <td>Registers the SecurityHeadersMiddleware globally so it runs on every request including the login page.</td>
+    <td>Laravel Bootstrap</td>
+  </tr>
+  <tr>
+    <td><code>database/migrations/core/0001_01_01_000000_create_users_table.php</code></td>
+    <td>Created the <code>users</code> table in the database (name, email, password, timestamps).</td>
+    <td>Database Schema</td>
+  </tr>
+  <tr>
+    <td><code>database/migrations/core/2025_12_29_add_microsoft_id_to_users_table.php</code></td>
+    <td>Added the <code>microsoft_id</code> column to the users table so we can link each user to their Microsoft account.</td>
+    <td>Database Schema</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════ SECTION 5 ═══ -->
+<h2 id="security">5. Security Features Built Into Login</h2>
+
+<p>The login page has <strong>7 security protections</strong> active:</p>
+
+<table>
+  <tr>
+    <th>#</th>
+    <th>Security Feature</th>
+    <th>What it prevents</th>
+    <th>Where it is</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td><strong>Rate Limiting (15/min)</strong></td>
+    <td>Bots/attackers cannot click the login button hundreds of times per second. After 15 attempts per minute from the same IP address, they get a "429 Too Many Requests" error.</td>
+    <td><code>routes/web.php</code> — <code>->middleware('throttle:15,1')</code></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td><strong>Domain Restriction</strong></td>
+    <td>Only emails ending in <code>@tanseeqinvestment.com</code> can log in. Someone with a Gmail or competitor email who somehow has a Microsoft account cannot access the system.</td>
+    <td><code>MicrosoftOAuthController@emailDomainAllowed</code></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td><strong>Session Regeneration</strong></td>
+    <td>Prevents "Session Fixation" — a trick where an attacker pre-plants a session ID in a link, then waits for a victim to log in with that link, and hijacks their session. By generating a brand new session ID immediately after login, the old planted ID becomes useless.</td>
+    <td><code>$request->session()->regenerate()</code> in controller</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td><strong>Encrypted Sessions</strong></td>
+    <td>Session data stored in Redis is encrypted using AES-256. Even if someone read the raw Redis data, they would see gibberish.</td>
+    <td><code>SESSION_ENCRYPT=true</code> in <code>.env</code></td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td><strong>No Error Leaking</strong></td>
+    <td>Error messages shown to the user are generic ("Authentication failed. Please try again"). The actual technical error (PHP exception, stack trace, D365 details) only goes to the server log — never visible to the user or in the HTML source.</td>
+    <td>Error constants in <code>MicrosoftOAuthController</code></td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td><strong>HTTP Security Headers</strong></td>
+    <td>
+      Every page response (including login) includes headers that instruct the browser on how to handle the page securely:
+      <ul>
+        <li><code>X-Frame-Options: SAMEORIGIN</code> — prevents the page being embedded in an iframe on another website (clickjacking attack).</li>
+        <li><code>X-Content-Type-Options: nosniff</code> — prevents browser from guessing file types (MIME sniffing attacks).</li>
+        <li><code>X-XSS-Protection: 1; mode=block</code> — extra browser-level cross-site scripting protection.</li>
+        <li><code>Referrer-Policy</code> — controls what URL information is shared when navigating away.</li>
+        <li><code>Strict-Transport-Security</code> — forces HTTPS for 1 year (active in production).</li>
+      </ul>
+    </td>
+    <td><code>SecurityHeadersMiddleware.php</code></td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td><strong>No Password in Our Database</strong></td>
+    <td>Microsoft handles password verification entirely. Our database only stores the name, email, and Microsoft user ID. Even if our database were somehow accessed, there are no passwords to steal.</td>
+    <td>Architecture decision — OAuth 2.0 by design</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════ SECTION 6 ═══ -->
+<div class="page-break"></div>
+<h2 id="error-handling">6. Error Handling — What Goes Wrong and Why</h2>
+
+<p>There are 5 error scenarios the login handles gracefully:</p>
+
+<table>
+  <tr>
+    <th>Scenario</th>
+    <th>What user sees</th>
+    <th>What actually happened</th>
+    <th>Logged?</th>
+  </tr>
+  <tr>
+    <td>Azure credentials not configured</td>
+    <td>"Authentication is not available right now. Please contact the administrator."</td>
+    <td><code>AZURE_CLIENT_ID</code> or <code>AZURE_CLIENT_SECRET</code> is empty in <code>.env</code></td>
+    <td>Yes — <code>Log::error</code> with which config keys are missing</td>
+  </tr>
+  <tr>
+    <td>Microsoft returns no email</td>
+    <td>"Authentication failed. Please try again or contact support."</td>
+    <td>Microsoft didn't include the email in the profile response (rare edge case)</td>
+    <td>Yes — <code>Log::warning</code></td>
+  </tr>
+  <tr>
+    <td>Email outside allowed domain</td>
+    <td>"Access is restricted to company accounts only."</td>
+    <td>Email domain is not <code>tanseeqinvestment.com</code></td>
+    <td>Yes — domain logged (not full email)</td>
+  </tr>
+  <tr>
+    <td>General OAuth failure</td>
+    <td>"Authentication failed. Please try again or contact support."</td>
+    <td>Any PHP exception during callback (network issue, Microsoft error, invalid state token)</td>
+    <td>Yes — full exception class and message logged</td>
+  </tr>
+  <tr>
+    <td>User cancelled on Microsoft page</td>
+    <td>"Authentication failed. Please try again or contact support."</td>
+    <td>Microsoft sends <code>error=access_denied</code> to the callback URL</td>
+    <td>Yes — <code>oauth_error</code> and <code>error_description</code> logged</td>
+  </tr>
+</table>
+
+<div class="callout">
+  <strong>📋 Where to find login errors:</strong>
+  All login errors are written to the Laravel log file at <code>storage/logs/laravel.log</code>.
+  Search for "Microsoft OAuth" in that file to find any authentication issues.
+</div>
+
+<!-- ═══════════════════════════════════════════════════ SECTION 7 ═══ -->
+<h2 id="session">7. Sessions — How the App Remembers You Are Logged In</h2>
+
+<p>
+  After login, the app needs to remember who you are for every click and page load.
+  This is done through a <strong>session</strong>.
+</p>
+
+<h3>How it works:</h3>
+<ol>
+  <li>When you log in, the server generates a unique random session ID (e.g. <code>abc123xyz789...</code>).</li>
+  <li>This session ID is stored as a <strong>cookie</strong> in your browser (called <code>laravel_session</code>).</li>
+  <li>The actual session <em>data</em> (your user ID, any temporary messages, etc.) is stored in <strong>Redis</strong> — a fast in-memory database hosted on Upstash (cloud).</li>
+  <li>On every page request, your browser sends the cookie → the server looks up the session data in Redis → confirms you are logged in.</li>
+</ol>
+
+<table>
+  <tr>
+    <th>Session Setting</th>
+    <th>Value</th>
+    <th>Meaning</th>
+  </tr>
+  <tr>
+    <td><code>SESSION_DRIVER</code></td>
+    <td>redis</td>
+    <td>Sessions are stored in Redis (fast, survives server restarts)</td>
+  </tr>
+  <tr>
+    <td><code>SESSION_LIFETIME</code></td>
+    <td>120 minutes</td>
+    <td>You are automatically logged out after 2 hours of inactivity</td>
+  </tr>
+  <tr>
+    <td><code>SESSION_ENCRYPT</code></td>
+    <td>true</td>
+    <td>Session data in Redis is encrypted — unreadable without the app key</td>
+  </tr>
+  <tr>
+    <td>Redis host</td>
+    <td>Upstash cloud</td>
+    <td>Sessions survive a server restart — no one gets logged out when the app restarts</td>
+  </tr>
+</table>
+
+<div class="callout warning">
+  <strong>⚠️ Session Security Note:</strong>
+  The session cookie is marked <code>HttpOnly</code> (JavaScript on the page cannot read it)
+  and <code>SameSite=Lax</code> (prevents it being sent from external websites).
+  In production, it should also be marked <code>Secure</code> (HTTPS only).
+</div>
+
+<!-- ═══════════════════════════════════════════════════ SECTION 8 ═══ -->
+<h2 id="logout">8. Logout Flow</h2>
+
+<p>Logging out is handled by the <code>logout</code> method in <code>MicrosoftOAuthController</code>:</p>
+
+<div class="step-box">
+  <div class="step-num">1</div>
+  <div class="step-content">
+    <strong>User clicks the logout button</strong>
+    This sends a POST request to <code>/logout</code> (POST is used, not GET, to prevent logout being triggered by a link visited accidentally).
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <strong><code>Auth::logout()</code></strong>
+    Clears the authentication state from the current session — the user is no longer considered logged in.
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    <strong><code>$request->session()->invalidate()</code></strong>
+    Deletes the entire session from Redis. The session ID cookie in the browser now points to nothing.
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">4</div>
+  <div class="step-content">
+    <strong><code>$request->session()->regenerateToken()</code></strong>
+    Issues a new CSRF token so any form data from the old session cannot be replayed.
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-num">5</div>
+  <div class="step-content">
+    <strong>Redirect to <code>/</code></strong>
+    User sees the login page again, fully logged out.
+  </div>
+</div>
+
+<div class="callout">
+  <strong>📌 Note:</strong>
+  This logout only ends the session with <em>our app</em>. The user is <strong>not</strong> logged out of
+  Microsoft itself. If they click "Sign in with Microsoft" again immediately, Microsoft may sign them in
+  automatically without asking for a password (because they are still signed into Microsoft in the browser).
+  This is standard behavior for all Microsoft OAuth apps.
+</div>
+
+<!-- ═══════════════════════════════════════════════════ SECTION 9 ═══ -->
+<div class="page-break"></div>
+<h2 id="concepts">9. Core Concepts Explained Simply</h2>
+
+<table>
+  <tr>
+    <th>Term</th>
+    <th>Simple Explanation</th>
+  </tr>
+  <tr>
+    <td><strong>OAuth 2.0</strong></td>
+    <td>A standard protocol (set of rules) that lets you use "Sign in with Google/Microsoft/etc." on other websites. The website never gets your password — it just gets a confirmation from Google/Microsoft that you are who you say you are.</td>
+  </tr>
+  <tr>
+    <td><strong>SSO (Single Sign-On)</strong></td>
+    <td>One login works for multiple systems. Since we use Microsoft SSO, your company Microsoft email/password unlocks both Outlook, Teams, AND this app. IT manages all access from one place.</td>
+  </tr>
+  <tr>
+    <td><strong>Authorization Code</strong></td>
+    <td>A short-lived temporary code (valid for ~1 minute) that Microsoft gives our server after you log in. Our server uses it to fetch your profile. It's like a ticket at a counter — you get it, hand it in, and get your profile back.</td>
+  </tr>
+  <tr>
+    <td><strong>Access Token</strong></td>
+    <td>A longer-lived credential that the server uses to talk to Microsoft's API and fetch your name, email, and user ID. Never shown to the user or the browser.</td>
+  </tr>
+  <tr>
+    <td><strong>Socialite (library)</strong></td>
+    <td>A Laravel package that handles the complex OAuth steps automatically. Without it, we'd have to write hundreds of lines of code to build URLs, validate tokens, and fetch profiles. Socialite reduces this to 3 lines of code.</td>
+  </tr>
+  <tr>
+    <td><strong>Session</strong></td>
+    <td>A way for the server to remember who you are between page clicks. Websites are stateless by default (each click is like meeting the server for the first time). A session gives you a "membership card" (the session cookie) that you show on every visit so the server recognizes you.</td>
+  </tr>
+  <tr>
+    <td><strong>Redis</strong></td>
+    <td>An extremely fast database stored in computer memory (RAM) rather than on disk. Used to store sessions and cache data. It's like having answers written on a whiteboard (fast to read) vs. searching through a filing cabinet (slower disk database).</td>
+  </tr>
+  <tr>
+    <td><strong>Middleware</strong></td>
+    <td>Code that runs automatically on every request, before the controller. Like a security guard at a building entrance. The SecurityHeadersMiddleware is one guard; the authentication check is another. Every page load passes through them.</td>
+  </tr>
+  <tr>
+    <td><strong>Route</strong></td>
+    <td>A mapping between a URL and a function that handles it. E.g., "when the URL is <code>/auth/microsoft</code>, run <code>MicrosoftOAuthController::redirectToMicrosoft()</code>." The app has hundreds of routes for different pages and API calls.</td>
+  </tr>
+  <tr>
+    <td><strong>Blade</strong></td>
+    <td>Laravel's templating language for HTML files. It adds features like <code>{{ variable }}</code> to print values, <code>@if</code>/<code>@endif</code> for conditions, and <code>{{ route('name') }}</code> to generate URLs. Files end in <code>.blade.php</code>.</td>
+  </tr>
+  <tr>
+    <td><strong>CSRF Token</strong></td>
+    <td>A secret code hidden in every HTML form. When the form is submitted, the server checks the code matches. This prevents attackers from tricking you into submitting a form on another website (Cross-Site Request Forgery attack).</td>
+  </tr>
+  <tr>
+    <td><strong>Session Fixation</strong></td>
+    <td>An attack where an attacker gets you to visit a link with a pre-set session ID in it, then waits for you to log in. Once you log in with that ID, the attacker (who knows the ID) now shares your authenticated session. Regenerating the session ID after login blocks this entirely.</td>
+  </tr>
+  <tr>
+    <td><strong>Tenant ID</strong></td>
+    <td>Every Microsoft organization (company) has a unique Tenant ID in Azure. It identifies which organization's users are allowed to authenticate. Ours is the Tanseeq Investment Azure tenant.</td>
+  </tr>
+  <tr>
+    <td><strong>Azure AD / Microsoft Entra</strong></td>
+    <td>Microsoft's identity service. It's the system that manages all company users, their passwords, and their access rights. When a user logs in to our app via Microsoft, Azure AD is the system doing the actual authentication.</td>
+  </tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════ SECTION 10 ═══ -->
+<h2 id="config">10. Environment Variables That Control Login</h2>
+
+<p>
+  These values are stored in the <code>.env</code> file on the server. They are never committed to Git or shared.
+  All sensitive values (secrets, passwords) must be kept private.
+</p>
+
+<table>
+  <tr>
+    <th>Variable</th>
+    <th>Example Value</th>
+    <th>Purpose</th>
+    <th>Where to get it</th>
+  </tr>
+  <tr>
+    <td><code>AZURE_TENANT_ID</code></td>
+    <td><code>a8255ea0-aa54-...</code></td>
+    <td>Identifies our company's Azure directory</td>
+    <td>Azure Portal → Azure Active Directory → Overview</td>
+  </tr>
+  <tr>
+    <td><code>AZURE_CLIENT_ID</code></td>
+    <td><code>401538ec-9257-...</code></td>
+    <td>Identifies our registered application in Azure</td>
+    <td>Azure Portal → App Registrations → your app → Application (client) ID</td>
+  </tr>
+  <tr>
+    <td><code>AZURE_CLIENT_SECRET</code></td>
+    <td><code>D5w8Q~XQ...</code></td>
+    <td>Password our server uses to prove to Microsoft it is our app</td>
+    <td>Azure Portal → App Registrations → your app → Certificates &amp; secrets</td>
+  </tr>
+  <tr>
+    <td><code>MICROSOFT_REDIRECT_URI</code></td>
+    <td><code>${APP_URL}/auth/microsoft/callback</code></td>
+    <td>URL Microsoft sends the user back to after sign-in. Must exactly match what is registered in Azure Portal.</td>
+    <td>Must be set manually; must match Azure Portal registration</td>
+  </tr>
+  <tr>
+    <td><code>MICROSOFT_ALLOWED_DOMAIN</code></td>
+    <td><code>tanseeqinvestment.com</code></td>
+    <td>Only emails ending in this domain can log in. Leave blank to allow any Microsoft account.</td>
+    <td>Set by the developer/IT administrator</td>
+  </tr>
+  <tr>
+    <td><code>SESSION_ENCRYPT</code></td>
+    <td><code>true</code></td>
+    <td>Encrypts all session data before saving to Redis</td>
+    <td>Set by the developer</td>
+  </tr>
+  <tr>
+    <td><code>SESSION_DRIVER</code></td>
+    <td><code>redis</code></td>
+    <td>Tells Laravel to store sessions in Redis instead of files</td>
+    <td>Set by the developer</td>
+  </tr>
+  <tr>
+    <td><code>REDIS_HOST</code></td>
+    <td><code>golden-dingo-128859.upstash.io</code></td>
+    <td>Address of the Redis server that stores sessions</td>
+    <td>Upstash dashboard → your database → Endpoint</td>
+  </tr>
+  <tr>
+    <td><code>APP_KEY</code></td>
+    <td><code>base64:xOTvFP...</code></td>
+    <td>The encryption key for sessions, cookies, and all encrypted data. Must never be changed in production (all sessions would become invalid).</td>
+    <td>Generated by <code>php artisan key:generate</code></td>
+  </tr>
+</table>
+
+<div class="callout danger">
+  <strong>🔴 Critical: Never share or commit these values</strong>
+  The <code>.env</code> file must never be committed to Git, shared by email, or stored in a screenshot.
+  If <code>AZURE_CLIENT_SECRET</code> is exposed, an attacker could impersonate our app to Microsoft.
+  Rotate the secret immediately in Azure Portal if it is ever exposed.
+</div>
+
+<hr>
+
+<p style="text-align:center; color:#888; font-size:9.5pt; margin-top: 30px;">
+  Tanseeq Investment — Web App Login Flow Documentation<br>
+  Version 1.0 · May 2026 · Prepared by the Development Team
+</p>
+
+</body>
+</html>

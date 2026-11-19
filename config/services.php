@@ -1,0 +1,78 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Third Party Services
+    |--------------------------------------------------------------------------
+    |
+    | This file is for storing the credentials for third party services such
+    | as Mailgun, Postmark, AWS and more. This file provides the de facto
+    | location for this type of information, allowing packages to have
+    | a conventional file to locate the various service credentials.
+    |
+    */
+
+    'postmark' => [
+        'key' => env('POSTMARK_API_KEY'),
+    ],
+
+    'resend' => [
+        'key' => env('RESEND_API_KEY'),
+    ],
+
+    'ses' => [
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    ],
+
+    'slack' => [
+        'notifications' => [
+            'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
+            'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
+        ],
+    ],
+    'microsoft' => [
+        'client_id' => env('MICROSOFT_CLIENT_ID', env('AZURE_CLIENT_ID')),
+        'client_secret' => env('MICROSOFT_CLIENT_SECRET', env('AZURE_CLIENT_SECRET')),
+        'redirect' => env('MICROSOFT_REDIRECT_URI'),
+        'tenant' => env('MICROSOFT_TENANT_ID', env('AZURE_TENANT_ID', 'common')),
+        'allowed_domain' => env('MICROSOFT_ALLOWED_DOMAIN'),
+        'scopes' => [
+            'openid',
+            'profile',
+            'email',
+            'User.Read',
+        ],
+    ],
+
+    'd365' => [
+        'tenant_id' => env('D365_TENANT_ID', env('MICROSOFT_TENANT_ID')),
+        'client_id' => env('D365_CLIENT_ID', env('MICROSOFT_CLIENT_ID')),
+        'client_secret' => env('D365_CLIENT_SECRET', env('MICROSOFT_CLIENT_SECRET')),
+        'scope' => env('D365_SCOPE', 'https://api.businesscentral.dynamics.com/.default'),
+        'base_url' => env('D365_BASE_URL'),
+        'companies_path' => env('D365_COMPANIES_PATH', '/companies'),
+        'projects_path' => env('D365_PROJECTS_PATH', '/projects'),
+        'item_lookup_path' => env('D365_ITEM_LOOKUP_PATH', '/item-lookup'),
+        'project_lookup_path' => env('D365_PROJECT_LOOKUP_PATH', '/project-lookup'),
+        'item_issue_post_path' => env('D365_ITEM_ISSUE_POST_PATH', '/item-issue-post'),
+        'purchase_requisition_post_path' => env('D365_PURCHASE_REQUISITION_POST_PATH', '/api/services/TIWebServiceGroup/PurchaseRequisitionService/Create'),
+        'purch_req_post_path' => env('D365_PURCH_REQ_POST_PATH', '/api/services/TIWebServiceGroup/PurchReqService/Create'),
+        'item_onhand_path' => env('D365_ITEM_ONHAND_PATH', '/item-onhand'),
+        'unit_lookup_path' => env('D365_UNIT_LOOKUP_PATH', '/unit-lookup'),
+        'grn_lookup_path' => env('D365_GRN_LOOKUP_PATH', '/api/services/TIWebServiceGroup/PurchIdLookpService/Read'),
+        'grn_line_lookup_path' => env('D365_GRN_LINE_LOOKUP_PATH', '/api/services/TIWebServiceGroup/PurchLineService/Read'),
+        'grn_post_path' => env('D365_GRN_POST_PATH', '/api/services/TIWebServiceGroup/PurchPackService/Create'),
+        'connect_timeout' => (int) env('D365_CONNECT_TIMEOUT', 10),
+        'request_timeout' => (int) env('D365_REQUEST_TIMEOUT', 25),
+        'grn_post_timeout' => (int) env('D365_GRN_POST_TIMEOUT', 90),
+        'item_issue_post_timeout' => (int) env('D365_ITEM_ISSUE_POST_TIMEOUT', 120),
+    ],
+
+    'webapp' => [
+        'api_bearer_token' => env('WEBAPP_API_BEARER_TOKEN'),
+    ],
+];
